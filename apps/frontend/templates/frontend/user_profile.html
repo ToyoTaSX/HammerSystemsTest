@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'frontend/css/styles.css' %}">
+    <title>Профиль</title>
+</head>
+<body>
+    <div class="profile-container">
+        <h2 class="profile-header">Здравствуйте, {{ number }}</h2>
+        <h3 class="referal-heder">Ваш код</h3>
+        <h3 class="referal-heder">{{ invite_code }}</h3>
+        <h3 class="referal-heder">Реферальный код</h3>
+        {% if activated_code %}
+            <input class="referal-input" type="text" placeholder="{{ activated_code }}" disabled>
+        {% else %}
+            <input class="referal-input" type="text" id="invite_code" placeholder="Инвайт-код">
+            <button onclick="sendInviteCode()" class="btn referal-btn" id="send-btn">Ввести реферальный код</button>
+        {% endif %}
+
+        {% if referals|length > 0 %}
+            <h3 class="referal-heder">Список ваших рефералов</h3>
+            {% for referal_number in referals %}
+                <p class="referal">{{ referal_number }}</p>
+            {% endfor %}
+        {% else %}
+            <h3 class="referal-heder">У вас пока нет рефералов</h3>
+        {% endif %}
+
+    </div>
+</body>
+<script src="{% static 'frontend/js/profile_script.js' %}"></script>
+</html>

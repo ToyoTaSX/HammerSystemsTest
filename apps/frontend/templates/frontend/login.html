@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'frontend/css/styles.css' %}">
+    <title>Вход</title>
+</head>
+<body>
+    <div class="container" id="step-1">
+        <h2 class="form-header">Вход</h2>
+        <input class="login-input" type="text" id="phone_number" placeholder="Номер телефона">
+        <button onclick="sendCode()" class="btn">Отправить</button>
+    </div>
+
+    <div class="container" id="step-2" style="display: none">
+        <h2 class="form-header">Вход</h2>
+        <input class="login-input" type="text" id="verify_code" placeholder="Код подтверждения">
+        <span class="code-span" id="code-span">code</span>
+        <button onclick="verifyCode()" class="btn">Отправить</button>
+    </div>
+
+    <div class="error-message-container" id="error-container" style="display: none">
+        <h2 class="error-header">Что-то пошло не так...</h2>
+        <p class="error-text" id="error-text">ошибка ошибка</p>
+    </div>
+</body>
+<script src="{% static 'frontend/js/auth_script.js' %}"></script>
+</html>
