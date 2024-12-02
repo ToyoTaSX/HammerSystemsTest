@@ -1,0 +1,1500 @@
+{
+	"info": {
+		"_postman_id": "417e5a9d-d46d-42d8-89d8-261692d139b0",
+		"name": "HammerSystems",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34246265"
+	},
+	"item": [
+		{
+			"name": "Tests",
+			"item": [
+				{
+					"name": "Неавторизованный доступ",
+					"item": [
+						{
+							"name": "Получение своего профиля",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{accessToken}}",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrftoken}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "invite_code",
+											"value": "972908",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{host}}/users/profile/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"users",
+										"profile",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Основная страница",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{host}}/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Отправка валидного инвайт-кода",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrftoken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "invite_code",
+											"value": "{{validInvite}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{host}}/users/invite-code/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"users",
+										"invite-code",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Проверка отправки невалидных данных",
+					"item": [
+						{
+							"name": "Логин",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.collectionVariables.set(\"csrftoken\", pm.cookies.get(\"csrftoken\"));"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\r",
+											"    \"uniqueNumber\",\r",
+											"    getRandomNumber(9000000000, 9999999999)\r",
+											")\r",
+											"\r",
+											"// min and max are both inclusive\r",
+											"function getRandomNumber(min, max) {\r",
+											"    const minNumber = Math.ceil(min);\r",
+											"    const maxNumber = Math.floor(max);\r",
+											"\r",
+											"    return Math.floor(\r",
+											"      Math.random() * (maxNumber - minNumber + 1)\r",
+											"    ) + minNumber;\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://{{host}}/login",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Отправка невалидного телефона",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code not Ok\", function () {\r",
+											"    pm.expect(pm.response.status).to.not.be.oneOf([200, 201, 202, 204]);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrftoken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "number",
+											"value": "+794324923492332323",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{host}}/auth/send-code/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"send-code",
+										""
+									],
+									"query": [
+										{
+											"key": "number",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Отправка валидного телефона Copy 2",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Поле 'code' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('code');\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Код является 4-значным числом\", function () {\r",
+											"    let code = pm.response.json().code;\r",
+											"    pm.expect(code).to.have.lengthOf(4);\r",
+											"    pm.expect(code).to.match(/^\\d{4}$/);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.collectionVariables.set(\"code\", pm.response.json().code);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrftoken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "number",
+											"value": "+7{{uniqueNumber}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{host}}/auth/send-code/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"send-code",
+										""
+									],
+									"query": [
+										{
+											"key": "number",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Отправка невалидного кода",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code not Ok\", function () {\r",
+											"    pm.expect(pm.response.status).to.not.be.oneOf([200, 201, 202, 204]);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrftoken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "number",
+											"value": "+7{{uniqueNumber}}",
+											"type": "text"
+										},
+										{
+											"key": "code",
+											"value": "4324324234324324",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{host}}/auth/verification-code/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"verification-code",
+										""
+									],
+									"query": [
+										{
+											"key": "number",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Отправка валидного кода",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Поле 'accessToken' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('access_token');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Поле 'refreshToken' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('refresh_token');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.collectionVariables.set(\"refreshToken\", pm.response.json().refresh_token);\r",
+											"pm.collectionVariables.set(\"accessToken\", pm.response.json().access_token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrftoken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "number",
+											"value": "+7{{uniqueNumber}}",
+											"type": "text"
+										},
+										{
+											"key": "code",
+											"value": "{{code}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{host}}/auth/verification-code/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"verification-code",
+										""
+									],
+									"query": [
+										{
+											"key": "number",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Отправка несуществующего инвайт-кода Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code not Ok\", function () {\r",
+											"    pm.expect(pm.response.status).to.not.be.oneOf([200, 201, 202, 204]);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrftoken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "invite_code",
+											"value": "5435934594359",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{host}}/users/invite-code/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"users",
+										"invite-code",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Получение своего профиля",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Поле 'your_number' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('your_number');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Поле 'your_code' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('your_code');\r",
+											"});\r",
+											"\r",
+											"pm.collectionVariables.set('selfCode', pm.response.json().your_code)\r",
+											"\r",
+											"pm.test(\"Поле 'referals_numbers' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('referals_numbers');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Поле 'activated_code' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('activated_code');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{accessToken}}",
+										"type": "text"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrftoken}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "invite_code",
+											"value": "972908",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{host}}/users/profile/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"users",
+										"profile",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Отправка собственного инвайт-кода",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code not Ok\", function () {\r",
+											"    pm.expect(pm.response.status).to.not.be.oneOf([200, 201, 202, 204]);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrftoken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "invite_code",
+											"value": "{{selfCode}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{host}}/users/invite-code/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"users",
+										"invite-code",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Прямой проход по основному функционалу",
+					"item": [
+						{
+							"name": "Создание пользователя для теста инвайт-кода",
+							"item": [
+								{
+									"name": "Логин",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.collectionVariables.set(\"csrftoken\", pm.cookies.get(\"csrftoken\"));"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.collectionVariables.set(\r",
+													"    \"uniqueNumber\",\r",
+													"    getRandomNumber(9000000000, 9999999999)\r",
+													")\r",
+													"\r",
+													"// min and max are both inclusive\r",
+													"function getRandomNumber(min, max) {\r",
+													"    const minNumber = Math.ceil(min);\r",
+													"    const maxNumber = Math.floor(max);\r",
+													"\r",
+													"    return Math.floor(\r",
+													"      Math.random() * (maxNumber - minNumber + 1)\r",
+													"    ) + minNumber;\r",
+													"}"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": []
+										},
+										"url": {
+											"raw": "http://{{host}}/login",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Отправка валидного телефона Copy",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Поле 'code' присутствует в ответе\", function () {\r",
+													"    pm.expect(pm.response.json()).to.have.property('code');\r",
+													"});\r",
+													"\r",
+													"\r",
+													"pm.test(\"Код является 4-значным числом\", function () {\r",
+													"    let code = pm.response.json().code;\r",
+													"    pm.expect(code).to.have.lengthOf(4);\r",
+													"    pm.expect(code).to.match(/^\\d{4}$/);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.collectionVariables.set(\"code\", pm.response.json().code);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-CSRFToken",
+												"value": "{{csrftoken}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "number",
+													"value": "+7{{uniqueNumber}}",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://{{host}}/auth/send-code/",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"auth",
+												"send-code",
+												""
+											],
+											"query": [
+												{
+													"key": "number",
+													"value": "",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Отправка валидного кода Copy",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Поле 'accessToken' присутствует в ответе\", function () {\r",
+													"    pm.expect(pm.response.json()).to.have.property('access_token');\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Поле 'refreshToken' присутствует в ответе\", function () {\r",
+													"    pm.expect(pm.response.json()).to.have.property('refresh_token');\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"pm.collectionVariables.set(\"refreshToken\", pm.response.json().refresh_token);\r",
+													"pm.collectionVariables.set(\"accessToken\", pm.response.json().access_token);"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-CSRFToken",
+												"value": "{{csrftoken}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "number",
+													"value": "+7{{uniqueNumber}}",
+													"type": "text"
+												},
+												{
+													"key": "code",
+													"value": "{{code}}",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://{{host}}/auth/verification-code/",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"auth",
+												"verification-code",
+												""
+											],
+											"query": [
+												{
+													"key": "number",
+													"value": "",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Получение своего профиля Copy",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Поле 'your_number' присутствует в ответе\", function () {\r",
+													"    pm.expect(pm.response.json()).to.have.property('your_number');\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Поле 'your_code' присутствует в ответе\", function () {\r",
+													"    pm.expect(pm.response.json()).to.have.property('your_code');\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Поле 'referals_numbers' присутствует в ответе\", function () {\r",
+													"    pm.expect(pm.response.json()).to.have.property('referals_numbers');\r",
+													"});\r",
+													"pm.collectionVariables.set(\"validInvite\", pm.response.json().your_code);\r",
+													"\r",
+													"pm.test(\"Поле 'activated_code' присутствует в ответе\", function () {\r",
+													"    pm.expect(pm.response.json()).to.have.property('activated_code');\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Activaetd code is null\", function () {\r",
+													"    var jsonData = pm.response.json();\r",
+													"    pm.expect(jsonData.activated_code).null;\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{accessToken}}",
+												"type": "text"
+											},
+											{
+												"key": "X-CSRFToken",
+												"value": "{{csrftoken}}",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "invite_code",
+													"value": "972908",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "http://{{host}}/users/profile/",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"users",
+												"profile",
+												""
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Логин",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.collectionVariables.set(\"csrftoken\", pm.cookies.get(\"csrftoken\"));\r",
+											"\r",
+											"pm.collectionVariables.set(\r",
+											"    \"uniqueNumber1\",\r",
+											"    getRandomNumber(9000000000, 9999999999)\r",
+											")\r",
+											"\r",
+											"// min and max are both inclusive\r",
+											"function getRandomNumber(min, max) {\r",
+											"    const minNumber = Math.ceil(min);\r",
+											"    const maxNumber = Math.floor(max);\r",
+											"\r",
+											"    return Math.floor(\r",
+											"      Math.random() * (maxNumber - minNumber + 1)\r",
+											"    ) + minNumber;\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{host}}/login",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Отправка валидного телефона",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Поле 'code' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('code');\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Код является 4-значным числом\", function () {\r",
+											"    let code = pm.response.json().code;\r",
+											"    pm.expect(code).to.have.lengthOf(4);\r",
+											"    pm.expect(code).to.match(/^\\d{4}$/);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.collectionVariables.set(\"code\", pm.response.json().code);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrftoken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "number",
+											"value": "+7{{uniqueNumber1}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{host}}/auth/send-code/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"send-code",
+										""
+									],
+									"query": [
+										{
+											"key": "number",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Отправка валидного кода",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Поле 'accessToken' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('access_token');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Поле 'refreshToken' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('refresh_token');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.collectionVariables.set(\"refreshToken\", pm.response.json().refresh_token);\r",
+											"pm.collectionVariables.set(\"accessToken\", pm.response.json().access_token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrftoken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "number",
+											"value": "+7{{uniqueNumber1}}",
+											"type": "text"
+										},
+										{
+											"key": "code",
+											"value": "{{code}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{host}}/auth/verification-code/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"auth",
+										"verification-code",
+										""
+									],
+									"query": [
+										{
+											"key": "number",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Получение своего профиля",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Поле 'your_number' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('your_number');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Поле 'your_code' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('your_code');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Поле 'referals_numbers' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('referals_numbers');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Поле 'activated_code' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('activated_code');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Activaetd code is null\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.activated_code).null;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{accessToken}}",
+										"type": "text"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrftoken}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "invite_code",
+											"value": "972908",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{host}}/users/profile/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"users",
+										"profile",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Отправка валидного инвайт-кода",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrftoken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "invite_code",
+											"value": "{{validInvite}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{host}}/users/invite-code/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"users",
+										"invite-code",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Получение своего профиля Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Поле 'your_number' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('your_number');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Поле 'your_code' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('your_code');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Поле 'referals_numbers' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('referals_numbers');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Поле 'activated_code' присутствует в ответе\", function () {\r",
+											"    pm.expect(pm.response.json()).to.have.property('activated_code');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Activaetd code is valid invite\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.activated_code).to.eql(pm.collectionVariables.get('validInvite'));\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{accessToken}}",
+										"type": "text"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrftoken}}",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "invite_code",
+											"value": "972908",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://{{host}}/users/profile/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"users",
+										"profile",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Основная страница",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{host}}/",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "Запускать тесты в той же последовательности что есть в папке, снять галочки с сохранения coockies и CollectionVariables, иначе не будут проходить тесты неавторизованного доступа после первого раза."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "invalidPhone",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "invalidCode",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "invalidInviteCode",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "host",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
